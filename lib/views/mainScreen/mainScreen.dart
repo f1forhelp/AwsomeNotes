@@ -3,10 +3,10 @@ import 'package:awsomeNotes/appUtilities/dimensions.dart';
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:awsomeNotes/views/mainScreen/fakeSearchField.dart';
 import 'package:awsomeNotes/views/mainScreen/gridViewContainer.dart';
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'inputDialogue.dart';
@@ -79,8 +79,19 @@ class _MainScreenState extends State<MainScreen> {
                         fontWeight: FontWeight.w400,
                         fontSize: Dimensions.boxHeight * 5),
                   ),
+                  Transform.scale(
+                    scale: 1.2,
+                    child: DayNightSwitcher(
+                      nightBackgroundColor: Colors.white10,
+                      isDarkModeEnabled: true,
+                      onStateChanged: (bool isDarkModeEnabled) {},
+                    ),
+                  ),
                   FakeSearchBar(),
                 ],
+              ),
+              SizedBox(
+                height: 10,
               ),
               FutureBuilder<List<MainData>>(
                   future: counter == 0 ? MainPageModel.instance().read() : null,
