@@ -79,15 +79,22 @@ class _MainScreenState extends State<MainScreen> {
                         fontWeight: FontWeight.w400,
                         fontSize: Dimensions.boxHeight * 5),
                   ),
-                  Transform.scale(
-                    scale: 1.2,
-                    child: DayNightSwitcher(
-                      nightBackgroundColor: Colors.white10,
-                      isDarkModeEnabled: true,
-                      onStateChanged: (bool isDarkModeEnabled) {},
-                    ),
+                  Row(
+                    children: [
+                      Transform.scale(
+                        scale: 1,
+                        child: DayNightSwitcher(
+                          nightBackgroundColor: Colors.white10,
+                          isDarkModeEnabled: true,
+                          onStateChanged: (bool isDarkModeEnabled) {},
+                        ),
+                      ),
+                      SizedBox(
+                        width: Dimensions.boxWidth * 3,
+                      ),
+                      FakeSearchBar(),
+                    ],
                   ),
-                  FakeSearchBar(),
                 ],
               ),
               SizedBox(
