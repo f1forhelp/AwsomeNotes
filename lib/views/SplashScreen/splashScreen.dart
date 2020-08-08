@@ -8,10 +8,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  nextPage() async {
+  Future<void> nextPage() async {
     await Future.delayed(Duration(seconds: 5));
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => PhoneAuthPage()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => PhoneAuthPage(),
+      ),
+    );
   }
 
   @override

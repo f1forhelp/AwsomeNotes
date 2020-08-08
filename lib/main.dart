@@ -22,52 +22,52 @@ void main() async {
   );
 }
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         FocusNode focusNode = FocusScope.of(context);
-//         if (focusNode.hasPrimaryFocus) {
-//           focusNode.unfocus();
-//         }
-//       },
-//       child: MaterialApp(
-//         home: PhoneAuthPage(),
-//       ),
-//     );
-//   }
-// }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         FocusNode focusNode = FocusScope.of(context);
-        if (!focusNode.hasPrimaryFocus) {
+        if (focusNode.hasPrimaryFocus) {
           focusNode.unfocus();
         }
       },
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (context, snapshot) {
-            print(snapshot.connectionState);
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingScreen();
-            } else if (snapshot.connectionState == ConnectionState.active &&
-                !snapshot.hasData) {
-              return SplashScreen();
-            } else if (snapshot.connectionState == ConnectionState.active &&
-                snapshot.hasData) {
-              return MainScreen();
-            } else
-              return null;
-          },
-        ),
+        home: MainScreen(),
       ),
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () {
+//         FocusNode focusNode = FocusScope.of(context);
+//         if (!focusNode.hasPrimaryFocus) {
+//           focusNode.unfocus();
+//         }
+//       },
+//       child: MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         home: StreamBuilder<FirebaseUser>(
+//           stream: FirebaseAuth.instance.onAuthStateChanged,
+//           builder: (context, snapshot) {
+//             print(snapshot.connectionState);
+//             if (snapshot.connectionState == ConnectionState.waiting) {
+//               return LoadingScreen();
+//             } else if (snapshot.connectionState == ConnectionState.active &&
+//                 !snapshot.hasData) {
+//               return SplashScreen();
+//             } else if (snapshot.connectionState == ConnectionState.active &&
+//                 snapshot.hasData) {
+//               return MainScreen();
+//             } else
+//               return null;
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -15,7 +15,11 @@ class ValidateButton extends StatelessWidget {
     if (firebaseUser == null) {
     } else
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ),
+      );
   }
 
   @override

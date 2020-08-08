@@ -19,9 +19,9 @@ class PhoneValidationService {
     await FirebaseAuth.instance.signInWithCredential(authCredentials);
   }
 
-  signInWItOtp(verId, otp) async {
-    AuthCredential authCredential =
-        PhoneAuthProvider.getCredential(verificationId: verId, smsCode: otp);
+  signInWItOtp(otp) async {
+    AuthCredential authCredential = PhoneAuthProvider.getCredential(
+        verificationId: this.verId, smsCode: otp);
     await _signIn(authCredential);
   }
 
@@ -32,7 +32,9 @@ class PhoneValidationService {
   Future verifyPhone() async {
     final PhoneVerificationCompleted verified =
         (AuthCredential authCredential) {
+      print(authCredential.providerId);
       _signIn(authCredential);
+      print(1);
     };
 
     final PhoneVerificationFailed verificationFailed =
@@ -40,7 +42,9 @@ class PhoneValidationService {
       print(authException.message);
     };
 
-    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {};
+    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+      print(2);
+    };
 
     final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verId) {
       this.verId = verId;
