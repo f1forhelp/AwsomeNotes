@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MainPageModel {
+  DocumentSnapshot _lastDocument;
+
   static MainPageModel _object;
   MainPageModel._();
   Firestore _firestore = Firestore.instance;
@@ -11,24 +15,72 @@ class MainPageModel {
     return _object;
   }
 
-  Future<void> read() async {
-    Timestamp timestamp;
+  List<MainData> mainData = [];
 
-    print("reading");
+  Future<List<MainData>> read() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection("9213903123")
-        .orderBy('word', descending: true)
-        .getDocuments();
-    querySnapshot.documents.forEach((element) {});
+        .orderBy('serverTimeStamp', descending: true)
+        .limit(19)
+        .getDocuments()
+        .catchError((e) {
+      print(e);
+    });
+    querySnapshot.documents.forEach((element) {
+      mainData.add(MainData(
+          dateTime: element.data["deviceTimeStamp"],
+          message: element.data["message"],
+          title: element.data["title"]));
+    });
+
+    _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
+
+    print(_lastDocument.data["title"]);
+
+    return mainData;
   }
 
-  void create(String word, String meaning) {
+  Future<void> readMore() async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection("9213903123")
+        .orderBy('serverTimeStamp', descending: true)
+        .limit(20)
+        .startAfter(
+          [
+            _lastDocument.data['serverTimeStamp'],
+          ],
+        )
+        .getDocuments()
+        .catchError((e) {
+          print(e);
+        });
+
+    querySnapshot.documents.forEach((element) {
+      mainData.add(MainData(
+          dateTime: element.data["deviceTimeStamp"],
+          message: element.data["message"],
+          title: element.data["title"]));
+    });
+
+    _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
+    print(_lastDocument.data["title"]);
+  }
+
+  void create(String title, String message) {
     _firestore.collection("9213903123").document().setData(
       {
-        "word": word,
-        "meaning": meaning,
-        "timeStamp": FieldValue.serverTimestamp()
+        "title": title,
+        "message": message,
+        "deviceTimeStamp": DateTime.now(),
+        "serverTimeStamp": FieldValue.serverTimestamp(),
       },
     );
   }
+}
+
+class MainData {
+  String title;
+  String message;
+  Timestamp dateTime;
+  MainData({this.title, this.message, this.dateTime});
 }

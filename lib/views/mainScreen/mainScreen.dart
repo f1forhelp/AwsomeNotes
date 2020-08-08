@@ -1,11 +1,13 @@
 import 'package:awsomeNotes/appUtilities/dimensions.dart';
-import 'package:awsomeNotes/model/demoData.dart';
+
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:awsomeNotes/views/mainScreen/fakeSearchField.dart';
 import 'package:awsomeNotes/views/mainScreen/gridViewContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'inputDialogue.dart';
 
@@ -15,35 +17,31 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  data() async {
-    FirebaseUser firebaseUser;
-    firebaseUser = await FirebaseAuth.instance.currentUser();
-    print(firebaseUser.phoneNumber);
-  }
-
-  Future<void> temp() async {
-    for (int i = 0; i < 50; i++) {
-      await MainPageModel.instance().create(i, i.toString());
-    }
-  }
-
-  Future<void> demo() async {
-    print(scrollController.position.maxScrollExtent);
-  }
-
   ScrollController scrollController;
   @override
   void initState() {
     scrollController = ScrollController();
-    //temp();
-    //MainPageModel.instance().read();
-    super.initState();
-    scrollController.addListener(() {
-      demo();
+    scrollController.addListener(() async {
+      try {
+        if (scrollController.position.maxScrollExtent ==
+            scrollController.position.pixels) {
+          print(scrollController.position.maxScrollExtent);
+          print(scrollController.position.pixels);
+          await MainPageModel.instance().readMore();
+          setState(() {});
+        }
+      } catch (e) {
+        print(e);
+      }
+
+      // if(scrollController.position.maxScrollExtent==scrollController.position){
+
+      // }
     });
-    //data();
+    super.initState();
   }
 
+  int counter = 0;
   @override
   Widget build(BuildContext context) {
     Dimensions(context);
@@ -84,49 +82,78 @@ class _MainScreenState extends State<MainScreen> {
                   FakeSearchBar(),
                 ],
               ),
-              Expanded(
-                child: StaggeredGridView.countBuilder(
-                  controller: scrollController,
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  crossAxisCount: 2,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) => Container(
-                    child: Container(
-                      color: Colors.greenAccent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            lisData[index].word,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: Dimensions.boxHeight * 3),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+              FutureBuilder<List<MainData>>(
+                  future: counter == 0 ? MainPageModel.instance().read() : null,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      counter++;
+                      return Expanded(
+                        child: StaggeredGridView.countBuilder(
+                          controller: scrollController,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          crossAxisCount: 2,
+                          itemCount: MainPageModel.instance().mainData.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Container(
+                            child: Container(
+                              color: Colors.greenAccent,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    MainPageModel.instance()
+                                        .mainData[index]
+                                        .title,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Dimensions.boxHeight * 3),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(
+                                    height: Dimensions.boxHeight * 2,
+                                  ),
+                                  Text(
+                                    MainPageModel.instance()
+                                        .mainData[index]
+                                        .message,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 5,
+                                  ),
+                                  Text(
+                                    MainPageModel.instance()
+                                        .mainData[index]
+                                        .dateTime
+                                        .toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          SizedBox(
-                            height: Dimensions.boxHeight * 2,
-                          ),
-                          Text(
-                            lisData[index].meaning,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  staggeredTileBuilder: (int index) {
-                    if (lisData[index].meaning.length > 20)
-                      return StaggeredTile.extent(2, 100);
-                    else
-                      return StaggeredTile.extent(1, 100);
-                  },
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                ),
-              )
+                          staggeredTileBuilder: (int index) {
+                            if (MainPageModel.instance()
+                                    .mainData[index]
+                                    .message
+                                    .length >
+                                20)
+                              return StaggeredTile.extent(2, 100);
+                            else
+                              return StaggeredTile.extent(1, 100);
+                          },
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10.0,
+                        ),
+                      );
+                    } else
+                      return SpinKitRotatingCircle(
+                        color: Colors.white,
+                        size: 100.0,
+                      );
+                  })
             ],
           ),
         ),
