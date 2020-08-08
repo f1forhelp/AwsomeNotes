@@ -19,10 +19,7 @@ class MainPageModel {
         .collection("9213903123")
         .orderBy('word', descending: true)
         .getDocuments();
-    querySnapshot.documents.forEach((element) {
-      print(element.data.values);
-    });
-    print("stopped");
+    querySnapshot.documents.forEach((element) {});
   }
 
   void create(String word, String meaning) {
