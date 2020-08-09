@@ -31,7 +31,7 @@ class OtpPage extends StatelessWidget {
                   children: [
                     SizedBox(height: Dimensions.boxHeight * 5),
                     Align(
-                      alignment: Alignment(-0.9, 0),
+                      alignment: Alignment(-1, 0),
                       child: IconButton(
                           icon: Icon(
                             Icons.navigate_before,
@@ -55,22 +55,22 @@ class OtpPage extends StatelessWidget {
                       height: Dimensions.boxHeight * 2,
                     ),
                     Text(
-                      "Please type the verification sent",
+                      "Please type the verification code sent",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Dimensions.boxHeight * 2.2),
+                    ),
+                    SizedBox(
+                      height: Dimensions.boxHeight * 1,
+                    ),
+                    Text(
+                      "to 9971179377",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: Dimensions.boxHeight * 2.2),
                     ),
                     SizedBox(
                       height: Dimensions.boxHeight * 0.5,
-                    ),
-                    Consumer<PhoneProvider>(
-                      builder: (context, obj, child) => Text(
-                        obj.getOtp(),
-                        // "to +91 9971179377",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Dimensions.boxHeight * 2.2),
-                      ),
                     ),
                     SizedBox(height: Dimensions.boxHeight * 8),
                     SizedBox(
