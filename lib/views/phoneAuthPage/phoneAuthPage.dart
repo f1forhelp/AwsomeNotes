@@ -1,121 +1,194 @@
 import 'package:awsomeNotes/appUtilities/dimensions.dart';
-import 'package:awsomeNotes/services/phoneValidationService.dart';
-import 'package:awsomeNotes/views/phoneAuthPage/textInputFieldAuth.dart';
-import 'package:awsomeNotes/views/phoneAuthPage/validateButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
-import 'bottomClipper.dart';
 
-class PhoneAuthPage extends StatefulWidget {
-  @override
-  _PhoneAuthPageState createState() => _PhoneAuthPageState();
-}
-
-class _PhoneAuthPageState extends State<PhoneAuthPage> {
-  GlobalKey<FormState> formState = GlobalKey<FormState>();
-
-  String value = "";
-  String phoneNo = "";
-  String smsCode = "";
-  bool isValidating;
-  @override
-  void initState() {
-    isValidating = false;
-    super.initState();
-  }
-
+class PhoneAuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Dimensions(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: Stack(
+    return Material(
+      color: Color(0xFFFCFDFE),
+      child: Column(
         children: [
-          Align(
-            alignment: Alignment(0, 1),
-            child: ClipPath(
-              clipper: BottomCLipper(),
-              child: Container(
-                width: double.infinity,
-                height: Dimensions.boxHeight * 55,
-                color: Colors.blueAccent,
+          Expanded(
+            child: Container(
+              color: Colors.transparent,
+              child: Column(
+                children: [],
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: Dimensions.boxHeight,
-                horizontal: Dimensions.boxWidth * 7),
-            child: SingleChildScrollView(
-              child: Form(
-                key: formState,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment(0.3, 0),
-                      child: SvgPicture.asset(
-                        "assets/phoneAuth.svg",
-                        width: Dimensions.boxWidth * 30,
-                        height: Dimensions.boxHeight * 30,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(-1, 0),
-                      child: Text(
-                        "Enter Phone No:",
-                        style: TextStyle(
-                          fontSize: Dimensions.boxHeight * 2,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: Dimensions.boxHeight,
-                    ),
-                    TextInputFieldAuth(
-                      function: (val) {
-                        print(val);
-                      },
-                    ),
-                    SizedBox(height: Dimensions.boxHeight * 6),
-                    PinCodeTextField(
-                      pinTheme: PinTheme(
-                        fieldHeight: Dimensions.boxHeight * 7,
-                        fieldWidth: Dimensions.boxWidth * 5.5,
-                        shape: PinCodeFieldShape.box,
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.boxHeight * 2),
-                      ),
-                      textStyle:
-                          TextStyle(fontSize: Dimensions.boxHeight * 3.5),
-                      obsecureText: false,
-                      backgroundColor: Theme.of(context).cardColor,
-                      length: 6,
-                      onChanged: (value) {
-                        this.smsCode = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: Dimensions.boxHeight * 3,
-                    ),
-                    ValidateButton(
-                      formState: formState,
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        PhoneValidationService.instance()
-                            .signInWItOtp(this.smsCode);
-                      },
-                      child: Text("press me"),
-                    ),
-                  ],
+          Container(
+            padding: EdgeInsets.all(Dimensions.boxHeight * 5),
+            width: double.infinity,
+            height: Dimensions.boxHeight * 45,
+            color: Colors.transparent,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              //mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      OtpButtons(
+                          value: "1",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [0]),
+                      OtpButtons(
+                          value: "2",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [3, 1]),
+                      OtpButtons(
+                          value: "3",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [0]),
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      OtpButtons(
+                          value: "4",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                      OtpButtons(
+                          value: "5",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [3, 1, 2]),
+                      OtpButtons(
+                          value: "6",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      OtpButtons(
+                          value: "7",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                      OtpButtons(
+                          value: "8",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [1, 2, 3]),
+                      OtpButtons(
+                          value: "9",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      OtpButtons(
+                          value: "",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                      OtpButtons(
+                          value: "0",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [1, 2, 3]),
+                      OtpButtons(
+                          value: "+",
+                          function: (val) {
+                            print(val);
+                          },
+                          side: [2]),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class OtpButtons extends StatelessWidget {
+  final Function(String) function;
+  final String value;
+  final List<int> side;
+  const OtpButtons({this.function, this.value, this.side});
+
+  final double borderWidth = 2;
+  final Color borderColour = Colors.blueAccent;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: () => function(value),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border(
+              bottom: side.contains(4)
+                  ? BorderSide(
+                      color: borderColour,
+                      width: this.borderWidth,
+                    )
+                  : BorderSide.none,
+              top: side.contains(2)
+                  ? BorderSide(
+                      color: borderColour,
+                      width: this.borderWidth,
+                    )
+                  : BorderSide.none,
+              right: side.contains(3)
+                  ? BorderSide(
+                      color: borderColour,
+                      width: this.borderWidth,
+                    )
+                  : BorderSide.none,
+              left: side.contains(1)
+                  ? BorderSide(
+                      color: borderColour,
+                      width: this.borderWidth,
+                    )
+                  : BorderSide.none,
+            ),
+          ),
+          alignment: Alignment(0, 0),
+          width: 50,
+          height: 50,
+          child: Text(
+            value,
+            style: TextStyle(fontSize: Dimensions.boxHeight * 3.5),
+          ),
+        ),
       ),
     );
   }

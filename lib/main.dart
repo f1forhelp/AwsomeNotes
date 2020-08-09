@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         }
       },
       child: MaterialApp(
-        home: MainScreen(),
+        home: PhoneAuthPage(),
       ),
     );
   }

@@ -1,10 +1,8 @@
-import 'dart:io';
-
+import 'package:awsomeNotes/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class MainPageModel {
-  DocumentSnapshot _lastDocument;
-
   static MainPageModel _object;
   MainPageModel._();
   Firestore _firestore = Firestore.instance;
@@ -13,6 +11,18 @@ class MainPageModel {
       _object = MainPageModel._();
     }
     return _object;
+  }
+
+  DocumentSnapshot _lastDocument;
+  int colourCounter = 0;
+
+  Color colourProvider() {
+    if (colourCounter < tileColors.length)
+      return tileColors[colourCounter++];
+    else {
+      colourCounter = 0;
+      return tileColors[colourCounter];
+    }
   }
 
   List<MainData> mainData = [];
@@ -26,16 +36,20 @@ class MainPageModel {
         .catchError((e) {
       print(e);
     });
-    querySnapshot.documents.forEach((element) {
-      mainData.add(MainData(
-          dateTime: element.data["deviceTimeStamp"],
-          message: element.data["message"],
-          title: element.data["title"]));
-    });
+    querySnapshot.documents.forEach(
+      (element) {
+        mainData.add(
+          MainData(
+            dateTime: element.data["deviceTimeStamp"].toDate(),
+            message: element.data["message"],
+            title: element.data["title"],
+            color: colourProvider(),
+          ),
+        );
+      },
+    );
 
     _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
-
-    print(_lastDocument.data["title"]);
 
     return mainData;
   }
@@ -57,30 +71,34 @@ class MainPageModel {
 
     querySnapshot.documents.forEach((element) {
       mainData.add(MainData(
-          dateTime: element.data["deviceTimeStamp"],
-          message: element.data["message"],
-          title: element.data["title"]));
+        dateTime: element.data["deviceTimeStamp"].toDate(),
+        message: element.data["message"],
+        title: element.data["title"],
+        color: colourProvider(),
+      ));
     });
 
     _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
-    print(_lastDocument.data["title"]);
   }
 
-  void create(String title, String message) {
-    _firestore.collection("9213903123").document().setData(
+  create(String title, String message) async {
+    await _firestore.collection("9213903123").document().setData(
       {
         "title": title,
         "message": message,
         "deviceTimeStamp": DateTime.now(),
         "serverTimeStamp": FieldValue.serverTimestamp(),
       },
-    );
+    ).catchError((e) {
+      print(e);
+    });
   }
 }
 
 class MainData {
+  Color color;
   String title;
   String message;
-  Timestamp dateTime;
-  MainData({this.title, this.message, this.dateTime});
+  DateTime dateTime;
+  MainData({this.title, this.message, this.dateTime, this.color});
 }

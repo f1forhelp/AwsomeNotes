@@ -1,14 +1,11 @@
 import 'package:awsomeNotes/appUtilities/dimensions.dart';
-
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:awsomeNotes/views/mainScreen/fakeSearchField.dart';
-import 'package:awsomeNotes/views/mainScreen/gridViewContainer.dart';
+import 'package:awsomeNotes/views/mainScreen/staggeredContainer.dart';
 import 'package:day_night_switcher/day_night_switcher.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'inputDialogue.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,23 +22,19 @@ class _MainScreenState extends State<MainScreen> {
       try {
         if (scrollController.position.maxScrollExtent ==
             scrollController.position.pixels) {
-          print(scrollController.position.maxScrollExtent);
-          print(scrollController.position.pixels);
           await MainPageModel.instance().readMore();
           setState(() {});
         }
       } catch (e) {
         print(e);
       }
-
-      // if(scrollController.position.maxScrollExtent==scrollController.position){
-
-      // }
     });
     super.initState();
   }
 
   int counter = 0;
+  int colourCounter = 0;
+
   @override
   Widget build(BuildContext context) {
     Dimensions(context);
@@ -54,7 +47,11 @@ class _MainScreenState extends State<MainScreen> {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => InputDialogue(),
+              builder: (context) => InputDialogue(
+                stateFunction: () {
+                  setState(() {});
+                },
+              ),
             );
           },
           child: Icon(
@@ -101,77 +98,58 @@ class _MainScreenState extends State<MainScreen> {
                 height: 10,
               ),
               FutureBuilder<List<MainData>>(
-                  future: counter == 0 ? MainPageModel.instance().read() : null,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      counter++;
-                      return Expanded(
-                        child: StaggeredGridView.countBuilder(
-                          controller: scrollController,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                          crossAxisCount: 2,
-                          itemCount: MainPageModel.instance().mainData.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              Container(
-                            child: Container(
-                              color: Colors.greenAccent,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    MainPageModel.instance()
-                                        .mainData[index]
-                                        .title,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Dimensions.boxHeight * 3),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  SizedBox(
-                                    height: Dimensions.boxHeight * 2,
-                                  ),
-                                  Text(
-                                    MainPageModel.instance()
-                                        .mainData[index]
-                                        .message,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 5,
-                                  ),
-                                  Text(
-                                    MainPageModel.instance()
-                                        .mainData[index]
-                                        .dateTime
-                                        .toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          staggeredTileBuilder: (int index) {
+                future: counter == 0 ? MainPageModel.instance().read() : null,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    counter++;
+                    return Expanded(
+                      child: StaggeredGridView.extentBuilder(
+                        controller: scrollController,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                        maxCrossAxisExtent: 200,
+                        itemCount:
+                            MainPageModel.instance().mainData.length == null
+                                ? 0
+                                : MainPageModel.instance().mainData.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return StaggeredContainer(index);
+                        },
+                        staggeredTileBuilder: (int index) {
+                          if (MainPageModel.instance()
+                                  .mainData[index]
+                                  .message
+                                  .length ==
+                              null)
+                            return StaggeredTile.extent(2, 100);
+                          else {
                             if (MainPageModel.instance()
                                     .mainData[index]
                                     .message
-                                    .length >
-                                20)
+                                    .length <
+                                10)
                               return StaggeredTile.extent(2, 100);
                             else
-                              return StaggeredTile.extent(1, 100);
-                          },
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
-                        ),
-                      );
-                    } else
-                      return SpinKitRotatingCircle(
-                        color: Colors.white,
-                        size: 100.0,
-                      );
-                  })
+                              return StaggeredTile.extent(2, 100);
+                          }
+                        },
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                      ),
+                    );
+                  } else if (snapshot.hasError)
+                    return Text(
+                      snapshot.error.toString(),
+                      style: TextStyle(color: Colors.white),
+                    );
+                  else {
+                    return SpinKitRotatingCircle(
+                      color: Colors.white,
+                      size: 100.0,
+                    );
+                  }
+                },
+              )
             ],
           ),
         ),

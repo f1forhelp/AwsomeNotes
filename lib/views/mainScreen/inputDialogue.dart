@@ -2,59 +2,90 @@ import 'package:awsomeNotes/appUtilities/dimensions.dart';
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:flutter/material.dart';
 
-class InputDialogue extends StatelessWidget {
-  const InputDialogue({
-    Key key,
-  }) : super(key: key);
+class InputDialogue extends StatefulWidget {
+  final Function stateFunction;
 
+  const InputDialogue({Key key, this.stateFunction});
+
+  @override
+  _InputDialogueState createState() => _InputDialogueState();
+}
+
+class _InputDialogueState extends State<InputDialogue> {
+  String title = "";
+  String message = "";
   @override
   Widget build(BuildContext context) {
     Dimensions(context);
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Dimensions.boxHeight * 2),
-      ),
-      backgroundColor: Colors.blueGrey,
-      content: Form(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InputTextField(
-              borderRadius: 100,
-              maxLength: 1,
-              hintText: "WORD",
-            ),
-            SizedBox(
-              height: Dimensions.boxHeight * 2,
-            ),
-            InputTextField(
-              borderRadius: Dimensions.boxHeight * 2.5,
-              maxLength: 4,
-              hintText: "MEANING",
-            ),
-          ],
+    return Builder(
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimensions.boxHeight * 2),
         ),
-      ),
-      actions: [
-        RawMaterialButton(
-          onPressed: () {
-            MainPageModel.instance().create("tata", "motors");
-          },
-          child: Text(
-            "SUBMIT",
-            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+        backgroundColor: Colors.blueGrey,
+        content: Form(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InputTextField(
+                borderRadius: 100,
+                maxLength: 1,
+                hintText: "Title",
+                onChange: (val) {
+                  this.title = val;
+                },
+              ),
+              SizedBox(
+                height: Dimensions.boxHeight * 2,
+              ),
+              InputTextField(
+                onChange: (val) {
+                  this.message = val;
+                },
+                borderRadius: Dimensions.boxHeight * 2.5,
+                maxLength: 4,
+                hintText: "Note",
+              ),
+            ],
           ),
         ),
-        RawMaterialButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            "CANCEL",
-            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+        actions: [
+          RawMaterialButton(
+            onPressed: () async {
+              try {
+                await MainPageModel.instance().create(title, message);
+                MainPageModel.instance().mainData.insert(
+                      0,
+                      MainData(
+                        dateTime: DateTime.now(),
+                        message: this.message,
+                        title: this.title,
+                        color: MainPageModel.instance().colourProvider(),
+                      ),
+                    );
+              } catch (e) {
+                print(e);
+              }
+              widget.stateFunction();
+            },
+            child: Text(
+              "SUBMIT",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+            ),
           ),
-        ),
-      ],
+          RawMaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "CANCEL",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -63,7 +94,9 @@ class InputTextField extends StatelessWidget {
   final int maxLength;
   final String hintText;
   final double borderRadius;
+  final Function(String) onChange;
   InputTextField({
+    this.onChange,
     this.hintText,
     this.borderRadius,
     this.maxLength,
@@ -75,6 +108,9 @@ class InputTextField extends StatelessWidget {
     return SizedBox(
       width: Dimensions.boxWidth * 35,
       child: TextFormField(
+        onChanged: (val) {
+          return onChange(val);
+        },
         cursorColor: Colors.white,
         style: TextStyle(
           color: Colors.white,
@@ -96,4 +132,9 @@ class InputTextField extends StatelessWidget {
       ),
     );
   }
+}
+
+List ls = [];
+a() {
+  ls.insert(0, "cc");
 }
