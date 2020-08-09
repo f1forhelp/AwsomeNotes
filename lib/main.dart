@@ -1,20 +1,24 @@
-import 'package:awsomeNotes/appUtilities/themeProvider.dart';
-import 'package:awsomeNotes/services/phoneValidationService.dart';
-import 'package:awsomeNotes/views/SplashScreen/splashScreen.dart';
-import 'package:awsomeNotes/views/loadingScreen/loadingScreen.dart';
-import 'package:awsomeNotes/views/mainScreen/mainScreen.dart';
-import 'package:awsomeNotes/views/noInternetConnection/noInternetConnection.dart';
-import 'package:awsomeNotes/views/phoneAuthPage/phoneAuthPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/themeProvider.dart';
+import 'package:awsomeNotes/model/phoneAuthenticationModel.dart';
+import 'package:awsomeNotes/views/phoneAuthPage/otpPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
+
+GetIt getIt = GetIt.instance;
 
 void main() async {
+  getIt.registerSingleton<PhoneAuthenticationModel>(PhoneAuthenticationModel());
+  // getIt.registerSingleton<PhoneOtpProvider>(PhoneOtpProvider());
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PhoneProvider(),
         ),
       ],
       child: MyApp(),
@@ -33,7 +37,8 @@ class MyApp extends StatelessWidget {
         }
       },
       child: MaterialApp(
-        home: PhoneAuthPage(),
+        debugShowCheckedModeBanner: false,
+        home: OtpPage(),
       ),
     );
   }

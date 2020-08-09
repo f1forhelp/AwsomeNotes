@@ -1,5 +1,5 @@
 import 'package:awsomeNotes/dimensions.dart';
-import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/views/phoneAuthPage/phoneField.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,6 @@ import 'keyPad.dart';
 class PhoneAuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _obj = Provider.of<PhoneProvider>(context, listen: false);
     Dimensions(context);
 
     return Material(

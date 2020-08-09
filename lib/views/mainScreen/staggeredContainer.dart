@@ -1,4 +1,4 @@
-import 'package:awsomeNotes/appUtilities/dimensions.dart';
+import 'package:awsomeNotes/dimensions.dart';
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

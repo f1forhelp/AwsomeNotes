@@ -1,4 +1,4 @@
-import 'package:awsomeNotes/appUtilities/dimensions.dart';
+import 'package:awsomeNotes/dimensions.dart';
 import 'package:awsomeNotes/services/phoneValidationService.dart';
 import 'package:awsomeNotes/views/mainScreen/mainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -8,6 +8,6 @@ class Dimensions {
 
   Dimensions(context) {
     boxHeight = MediaQuery.of(context).size.height / 100;
-    boxWidth = MediaQuery.of(context).size.height / 100;
+    boxWidth = MediaQuery.of(context).size.width / 100;
   }
 }

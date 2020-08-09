@@ -1,4 +1,4 @@
-import 'package:awsomeNotes/appUtilities/dimensions.dart';
+import 'package:awsomeNotes/dimensions.dart';
 import 'package:awsomeNotes/model/mainPageModel.dart';
 import 'package:awsomeNotes/views/mainScreen/fakeSearchField.dart';
 import 'package:awsomeNotes/views/mainScreen/staggeredContainer.dart';

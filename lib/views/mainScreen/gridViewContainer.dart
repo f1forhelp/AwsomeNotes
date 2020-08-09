@@ -1,4 +1,4 @@
-import 'package:awsomeNotes/appUtilities/dimensions.dart';
+import 'package:awsomeNotes/dimensions.dart';
 import 'package:flutter/material.dart';
 
 class GridViewContainer extends StatelessWidget {
