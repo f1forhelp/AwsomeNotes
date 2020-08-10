@@ -9,17 +9,19 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final obj = Provider.of<PhoneProvider>(context, listen: false);
-    print("bui");
     Dimensions(context);
     return Material(
       color: Color(0xFFFCFDFE),
       //color: Colors.black26,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xFFFF595F),
-            Color(0xFFE42959),
-          ]),
+          gradient: LinearGradient(
+              begin: Alignment(1, 1),
+              end: Alignment(-1, -1),
+              colors: [
+                Colors.purple.shade900,
+                Colors.pink.shade400,
+              ]),
         ),
         child: Column(
           children: [
@@ -78,7 +80,6 @@ class OtpPage extends StatelessWidget {
                       child: Selector<PhoneProvider, String>(
                         selector: (context, obj) => obj.getOtp(),
                         builder: (context, data, child) {
-                          print(data.length);
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

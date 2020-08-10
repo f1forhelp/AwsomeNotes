@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awsomeNotes/dimensions.dart';
 import 'package:flutter/material.dart';
 
@@ -127,6 +129,12 @@ class KeyPad extends StatelessWidget {
 class DeleteButton extends StatelessWidget {
   final Function function;
   DeleteButton({this.function});
+  continueDelet() {
+    for (int i = 0; i < 15; i++) {
+      sleep(Duration(milliseconds: 200));
+      print(i);
+    }
+  }
 
   final double borderWidth = 3;
   final Color borderColour = Colors.transparent;

@@ -1,9 +1,8 @@
 import 'package:awsomeNotes/dimensions.dart';
+import 'package:awsomeNotes/views/phoneAuthPage/keyPad.dart';
 import 'package:awsomeNotes/views/phoneAuthPage/phoneField.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'keyPad.dart';
 
 class PhoneAuthPage extends StatelessWidget {
   @override
