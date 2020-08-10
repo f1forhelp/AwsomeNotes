@@ -11,12 +11,14 @@ class KeyPad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: Dimensions.boxHeight * 5,
-        horizontal: Dimensions.boxHeight * 5,
+      padding: EdgeInsets.fromLTRB(
+        Dimensions.boxHeight * 5,
+        Dimensions.boxHeight * 0,
+        Dimensions.boxHeight * 5,
+        Dimensions.boxHeight * 5,
       ),
       width: double.infinity,
-      height: Dimensions.boxHeight * 50,
+      height: Dimensions.boxHeight * 45,
       color: Colors.transparent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

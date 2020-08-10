@@ -1,7 +1,9 @@
+import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:awsomeNotes/providers/phoneProvider.dart';
 import 'package:awsomeNotes/themeProvider.dart';
 import 'package:awsomeNotes/model/phoneAuthenticationModel.dart';
-import 'package:awsomeNotes/views/phoneAuthPage/otpPage.dart';
+import 'package:awsomeNotes/views/otpPage/otpPage.dart';
+import 'package:awsomeNotes/views/phonePage/phoneAuthPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +18,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OtpProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => PhoneProvider(),
@@ -38,7 +43,7 @@ class MyApp extends StatelessWidget {
       },
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: OtpPage(),
+        home: PhoneAuthPage(),
       ),
     );
   }

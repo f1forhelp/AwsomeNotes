@@ -1,14 +1,14 @@
-import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../dimensions.dart';
-import 'keyPad.dart';
+import '../../widgets/keyPad.dart';
 
 class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final obj = Provider.of<PhoneProvider>(context, listen: false);
+    final obj = Provider.of<OtpProvider>(context, listen: false);
     Dimensions(context);
     return Material(
       color: Color(0xFFFCFDFE),
@@ -77,7 +77,7 @@ class OtpPage extends StatelessWidget {
                     SizedBox(height: Dimensions.boxHeight * 8),
                     SizedBox(
                       width: Dimensions.boxWidth * 75,
-                      child: Selector<PhoneProvider, String>(
+                      child: Selector<OtpProvider, String>(
                         selector: (context, obj) => obj.getOtp(),
                         builder: (context, data, child) {
                           return Row(

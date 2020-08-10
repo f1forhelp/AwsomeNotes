@@ -1,5 +1,5 @@
 import 'package:awsomeNotes/dimensions.dart';
-import 'package:awsomeNotes/views/phoneAuthPage/phoneAuthPage.dart';
+import 'package:awsomeNotes/views/phonePage/phoneAuthPage.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

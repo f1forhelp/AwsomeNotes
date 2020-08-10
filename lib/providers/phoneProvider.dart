@@ -1,31 +1,41 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class PhoneProvider extends ChangeNotifier {
-  String otp;
-  String phoneNo;
-
-  String getOtp() {
-    if (otp == null) otp = "";
-    return otp;
-  }
-
-  setOtp(val) {
-    if (otp.length < 6) otp = otp + val;
-    notifyListeners();
-  }
-
-  otpBack(val) {
-    otp = val;
-    notifyListeners();
-  }
+  String _phoneNo = "";
+  String _countryCode = "+91";
+  String _subName = "IN";
 
   String getPhoneNo() {
-    if (phoneNo == null) phoneNo = "";
-    return phoneNo;
+    if (_phoneNo == null) _phoneNo = "";
+    return _phoneNo;
   }
 
   setPhoneNo(val) {
-    phoneNo = phoneNo + val;
+    if (_phoneNo.length <= 10) _phoneNo = _phoneNo + val;
+    notifyListeners();
+  }
+
+  setCountryCode(val) {
+    _countryCode = val;
+
+    notifyListeners();
+  }
+
+  String getCountryCode() {
+    return _countryCode;
+  }
+
+  setSubName(val) {
+    _subName = val;
+    notifyListeners();
+  }
+
+  String getSubName() {
+    return _subName;
+  }
+
+  phoneBack(val) {
+    _phoneNo = val;
     notifyListeners();
   }
 }
