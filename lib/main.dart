@@ -1,7 +1,8 @@
 import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/services/phoneValidationService.dart';
 import 'package:awsomeNotes/themeProvider.dart';
-import 'package:awsomeNotes/model/phoneAuthenticationModel.dart';
+import 'package:awsomeNotes/views/mainScreen/mainScreen.dart';
 import 'package:awsomeNotes/views/otpPage/otpPage.dart';
 import 'package:awsomeNotes/views/phonePage/phoneAuthPage.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,8 @@ import 'package:get_it/get_it.dart';
 GetIt getIt = GetIt.instance;
 
 void main() async {
-  getIt.registerSingleton<PhoneAuthenticationModel>(PhoneAuthenticationModel());
-  // getIt.registerSingleton<PhoneOtpProvider>(PhoneOtpProvider());
+  getIt.registerSingleton<PhoneValidationService>(PhoneValidationService());
+
   runApp(
     MultiProvider(
       providers: [
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       },
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: PhoneAuthPage(),
+        home: MainScreen(),
       ),
     );
   }

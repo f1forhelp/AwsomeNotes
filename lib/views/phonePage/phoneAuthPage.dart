@@ -1,6 +1,8 @@
 import 'package:awsomeNotes/dimensions.dart';
+import 'package:awsomeNotes/main.dart';
 import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/services/phoneValidationService.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/keyPad.dart';
@@ -113,7 +115,13 @@ class PhoneAuthPage extends StatelessWidget {
                                 Align(
                                   alignment: Alignment(1, 0),
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      getIt<PhoneValidationService>().phoneNo =
+                                          _obj.getCountryCode() +
+                                              _obj.getPhoneNo();
+                                      getIt<PhoneValidationService>()
+                                          .verifyPhone();
+                                    },
                                     child: Container(
                                       child: Text(
                                         "SUBMIT",
