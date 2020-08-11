@@ -2,17 +2,8 @@ import 'package:awsomeNotes/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-class MainPageModel {
-  static MainPageModel _object;
-  MainPageModel._();
+class MainPageService {
   Firestore _firestore = Firestore.instance;
-  static instance() {
-    if (_object == null) {
-      _object = MainPageModel._();
-    }
-    return _object;
-  }
-
   DocumentSnapshot _lastDocument;
   int colourCounter = 0;
 

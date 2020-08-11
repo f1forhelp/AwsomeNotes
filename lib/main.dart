@@ -1,5 +1,6 @@
 import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:awsomeNotes/providers/phoneProvider.dart';
+import 'package:awsomeNotes/services/mainPageService.dart';
 import 'package:awsomeNotes/services/phoneValidationService.dart';
 import 'package:awsomeNotes/themeProvider.dart';
 import 'package:awsomeNotes/views/mainScreen/mainScreen.dart';
@@ -12,8 +13,9 @@ import 'package:get_it/get_it.dart';
 GetIt getIt = GetIt.instance;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   getIt.registerSingleton<PhoneValidationService>(PhoneValidationService());
-
+  getIt.registerSingleton<MainPageService>(MainPageService());
   runApp(
     MultiProvider(
       providers: [
@@ -37,9 +39,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusNode focusNode = FocusScope.of(context);
-        if (focusNode.hasPrimaryFocus) {
-          focusNode.unfocus();
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus.unfocus();
         }
       },
       child: MaterialApp(
