@@ -5,14 +5,14 @@ import 'package:flutter/cupertino.dart';
 class MainPageService {
   Firestore _firestore = Firestore.instance;
   DocumentSnapshot _lastDocument;
-  int colourCounter = 0;
+  int _colourCounter = 0;
 
   Color colourProvider() {
-    if (colourCounter < tileColors.length)
-      return tileColors[colourCounter++];
+    if (_colourCounter < tileColors.length)
+      return tileColors[_colourCounter++];
     else {
-      colourCounter = 0;
-      return tileColors[colourCounter];
+      _colourCounter = 0;
+      return tileColors[_colourCounter];
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:awsomeNotes/main.dart';
 import 'package:awsomeNotes/providers/otpProvider.dart';
 import 'package:awsomeNotes/providers/phoneProvider.dart';
 import 'package:awsomeNotes/services/phoneValidationService.dart';
+import 'package:awsomeNotes/widgets/submitButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/keyPad.dart';
@@ -114,34 +115,14 @@ class PhoneAuthPage extends StatelessWidget {
                                 ),
                                 Align(
                                   alignment: Alignment(1, 0),
-                                  child: GestureDetector(
-                                    onTap: () {
+                                  child: SubmitButton(
+                                    function: () {
                                       getIt<PhoneValidationService>().phoneNo =
                                           _obj.getCountryCode() +
                                               _obj.getPhoneNo();
                                       getIt<PhoneValidationService>()
                                           .verifyPhone();
                                     },
-                                    child: Container(
-                                      child: Text(
-                                        "SUBMIT",
-                                        style: TextStyle(
-                                          fontSize: Dimensions.boxHeight * 2,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 1,
-                                        ),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimensions.boxHeight * 0.8),
-                                        color: Color(0xFFE42959),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.boxHeight * 1.3,
-                                        horizontal: Dimensions.boxHeight * 2,
-                                      ),
-                                    ),
                                   ),
                                 ),
                               ],

@@ -1,23 +1,31 @@
 import 'package:awsomeNotes/dimensions.dart';
-import 'package:awsomeNotes/providers/mainScreenProvider.dart';
+import 'package:awsomeNotes/views/mainScreen/createNotes.dart';
 import 'package:awsomeNotes/views/mainScreen/searchBar.dart';
 import 'package:awsomeNotes/widgets/dayNightCustom/dayNightCustom.dart';
+import 'package:awsomeNotes/widgets/submitButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Dimensions(context);
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal.shade400,
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          size: Dimensions.boxHeight * 5,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton(
+          backgroundColor: Colors.teal.shade400,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateNotes(),
+              ),
+            );
+          },
+          child: Icon(
+            Icons.add,
+            size: Dimensions.boxHeight * 5,
+          ),
         ),
       ),
       resizeToAvoidBottomPadding: false,
