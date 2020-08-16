@@ -1,8 +1,7 @@
 import 'package:awsomeNotes/dimensions.dart';
-import 'package:awsomeNotes/views/mainScreen/createNotes.dart';
+import 'package:awsomeNotes/views/mainScreen/createNotes/createNotes.dart';
 import 'package:awsomeNotes/views/mainScreen/searchBar.dart';
 import 'package:awsomeNotes/widgets/dayNightCustom/dayNightCustom.dart';
-import 'package:awsomeNotes/widgets/submitButton.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {

@@ -1,24 +1,10 @@
-import 'package:awsomeNotes/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 
 class MainPageService {
   Firestore _firestore = Firestore.instance;
   DocumentSnapshot _lastDocument;
-  int _colourCounter = 0;
 
-  Color colourProvider() {
-    if (_colourCounter < tileColors.length)
-      return tileColors[_colourCounter++];
-    else {
-      _colourCounter = 0;
-      return tileColors[_colourCounter];
-    }
-  }
-
-  List<MainData> mainData = [];
-
-  Future<List<MainData>> read() async {
+  Future<QuerySnapshot> read() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection("9213903123")
         .orderBy('serverTimeStamp', descending: true)
@@ -27,25 +13,13 @@ class MainPageService {
         .catchError((e) {
       print(e);
     });
-    querySnapshot.documents.forEach(
-      (element) {
-        mainData.add(
-          MainData(
-            dateTime: element.data["deviceTimeStamp"].toDate(),
-            message: element.data["message"],
-            title: element.data["title"],
-            color: colourProvider(),
-          ),
-        );
-      },
-    );
 
     _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
 
-    return mainData;
+    return querySnapshot;
   }
 
-  Future<void> readMore() async {
+  Future<QuerySnapshot> readMore() async {
     QuerySnapshot querySnapshot = await _firestore
         .collection("9213903123")
         .orderBy('serverTimeStamp', descending: true)
@@ -60,19 +34,13 @@ class MainPageService {
           print(e);
         });
 
-    querySnapshot.documents.forEach((element) {
-      mainData.add(MainData(
-        dateTime: element.data["deviceTimeStamp"].toDate(),
-        message: element.data["message"],
-        title: element.data["title"],
-        color: colourProvider(),
-      ));
-    });
-
     _lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
+    return querySnapshot;
   }
 
-  create(String title, String message) async {
+  Future<bool> create(String title, String message) async {
+    print("1");
+    bool sentResult = false;
     await _firestore.collection("9213903123").document().setData(
       {
         "title": title,
@@ -82,14 +50,9 @@ class MainPageService {
       },
     ).catchError((e) {
       print(e);
-    });
+      sentResult = false;
+    }).then((value) => {sentResult = true});
+    print("2");
+    return sentResult;
   }
-}
-
-class MainData {
-  Color color;
-  String title;
-  String message;
-  DateTime dateTime;
-  MainData({this.title, this.message, this.dateTime, this.color});
 }
